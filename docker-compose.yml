@@ -1,19 +1,11 @@
 version: '2'
 services:
   web:
-    image: dockercloud/hello-world
+    build: hello-world-hostname/
     ports:
       - 8080
     networks:
       - front-tier
-      - back-tier
-
-  redis:
-    image: redis
-    links:
-      - web
-    networks:
-      - back-tier
 
   lb:
     image: dockercloud/haproxy
@@ -23,12 +15,9 @@ services:
       - web
     networks:
       - front-tier
-      - back-tier
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock 
+      - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   front-tier:
-    driver: bridge
-  back-tier:
     driver: bridge
